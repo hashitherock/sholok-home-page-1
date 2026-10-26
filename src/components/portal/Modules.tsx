@@ -1,7 +1,8 @@
 import { Link } from "@tanstack/react-router";
-import { ChevronRight, ImageIcon, CloudSun } from "lucide-react";
+import { ChevronRight, CloudSun } from "lucide-react";
 import type { ReactNode } from "react";
-import { NEWS, TRENDS, BLOG, PRODUCTS, MARKETS, WEATHER } from "@/lib/demo-data";
+import { NEWS, TRENDS, BLOG, PRODUCTS, MARKETS, WEATHER, DEMO_MEDIA } from "@/lib/demo-data";
+import { Button } from "@/components/ui/button";
 import { SERVICES } from "@/lib/services";
 
 export function Module({ title, to, children }: { title: string; to?: string; children: ReactNode }) {
@@ -20,32 +21,32 @@ export function Module({ title, to, children }: { title: string; to?: string; ch
   );
 }
 
-const Thumb = ({ size = "h-14 w-20" }: { size?: string }) => (
-  <div className={`${size} flex shrink-0 items-center justify-center bg-muted text-muted-foreground`} aria-hidden>
-    <ImageIcon className="h-4 w-4" />
+const Thumb = ({ size = "h-16 w-24", index = 0, product = false, alt = "Demo editorial photograph" }: { size?: string; index?: number; product?: boolean; alt?: string }) => (
+  <div className={`${size} media-tile crop-${index} shrink-0 rounded-sm`}>
+    <img src={product ? DEMO_MEDIA.products : DEMO_MEDIA.editorial} alt={alt} loading="lazy" width={1024} height={1024} />
   </div>
 );
 
 export function NewsModule({ limit = 7 }: { limit?: number }) {
   const [lead, ...rest] = NEWS.slice(0, limit);
+  if (!lead) return null;
   return (
-    <Module title="News" to="news">
-      <div className="grid grid-cols-[minmax(0,1fr)] gap-0 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-        <article className="flex gap-3 border-b border-border p-3.5 md:border-b-0 md:border-r">
-          <Thumb size="h-20 w-28" />
-          <div className="min-w-0">
-            <span className="text-xs text-brand">{lead.topic}</span>
-            <h3 className="font-bold leading-snug">{lead.title}</h3>
-            <p className="text-xs text-muted-foreground">{lead.source}</p>
-          </div>
-        </article>
-        <ul className="divide-y divide-border px-3.5">
-          {rest.map((n) => (
-            <li key={n.id} className="flex items-baseline justify-between gap-3 py-1.5">
-              <span className="min-w-0 truncate hover:text-brand">{n.title}</span>
-              <span className="shrink-0 text-[11px] text-muted-foreground">{n.topic}</span>
-            </li>
-          ))}
+    <Module title="Newsstand" to="news">
+      <div className="mx-4 mt-3 flex items-center gap-3 bg-muted px-3 py-2 text-xs">
+        <Link to="/$service" params={{ service: "news" }} className="shrink-0 font-bold hover:text-brand">All news</Link>
+        <span className="h-3 border-l border-border" />
+        <Link to="/search" search={{ q: lead.title }} className="truncate hover:text-brand">{lead.title}</Link>
+      </div>
+      <div className="grid grid-cols-3 border-b border-border px-4 py-3 sm:grid-cols-6">
+        {NEWS.slice(0, 6).map(n => <Link key={n.id} to="/search" search={{ q: n.topic }} className="flex h-12 items-center justify-center border border-border text-xs font-bold hover:bg-brand-soft hover:text-brand">{n.topic}</Link>)}
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
+        <Link to="/search" search={{ q: lead.title }} className="flex gap-3 border-b border-border p-4 hover:text-brand sm:border-b-0 sm:border-r">
+          <Thumb size="h-24 w-28" alt="Generated demo photograph of a Dhaka metro train" />
+          <div className="min-w-0"><span className="text-xs text-brand">{lead.topic}</span><h3 className="mt-1 font-bold leading-snug">{lead.title}</h3><p className="mt-1 text-[11px] text-muted-foreground">{lead.source}</p></div>
+        </Link>
+        <ul className="divide-y divide-border px-4 py-2">
+          {rest.map(n => <li key={n.id} className="py-1.5"><Link to="/search" search={{ q: n.title }} className="flex items-baseline justify-between gap-2 hover:text-brand"><span className="truncate text-[13px]">{n.title}</span><span className="shrink-0 text-[10px] text-muted-foreground">{n.topic}</span></Link></li>)}
         </ul>
       </div>
     </Module>
@@ -72,9 +73,9 @@ export function BlogModule() {
       <ul className="grid grid-cols-[minmax(0,1fr)] divide-y divide-border sm:grid-cols-2 sm:divide-y-0">
         {BLOG.map((b, i) => (
           <li key={b.id} className={`flex gap-3 p-3.5 ${i > 1 ? "sm:border-t" : ""} ${i % 2 === 0 ? "sm:border-r" : ""} border-border`}>
-            <Thumb />
+            <Thumb index={[1, 2, 1, 3][i]} alt={`Generated demo photograph for ${b.title}`} />
             <div className="min-w-0">
-              <h3 className="truncate font-medium">{b.title}</h3>
+              <h3 className="line-clamp-2 font-medium"><Link to="/search" search={{ q: b.title }} className="hover:text-brand">{b.title}</Link></h3>
               <p className="line-clamp-2 text-xs text-muted-foreground">{b.excerpt}</p>
               <p className="text-[11px] text-muted-foreground">by {b.author}</p>
             </div>
@@ -89,9 +90,9 @@ export function ShoppingModule() {
   return (
     <Module title="Shopping highlights" to="shopping">
       <ul className="grid grid-cols-2 gap-3 p-3.5 sm:grid-cols-4">
-        {PRODUCTS.map((p) => (
+        {PRODUCTS.map((p, i) => (
           <li key={p.id} className="min-w-0">
-            <div className="flex aspect-square items-center justify-center bg-muted text-muted-foreground" aria-hidden><ImageIcon className="h-5 w-5" /></div>
+            <Link to="/search" search={{ q: p.name }}><Thumb size="aspect-[1.25] w-full" index={i} product alt={`Generated demo image of ${p.name}`} /></Link>
             <p className="mt-1.5 truncate text-[13px]">{p.name}</p>
             <p className="text-[13px] font-bold">{p.price} <span className="text-[10px] font-normal text-muted-foreground">sample</span></p>
           </li>
@@ -103,11 +104,9 @@ export function ShoppingModule() {
 
 export function AccountModule() {
   return (
-    <section className="module p-3.5" aria-label="Account">
-      <p className="text-[13px] text-muted-foreground">Preview your Sholok account. Sign-in is not available in this demo.</p>
-      <Link to="/$service" params={{ service: "account" }} className="mt-2.5 flex h-11 items-center justify-center bg-brand font-bold text-primary-foreground hover:bg-brand-hover">
-        Open account preview
-      </Link>
+    <section className="module p-4" aria-label="Account">
+      <p className="text-center text-[13px] text-muted-foreground">Your Sholok account <span className="demo-tag ml-1">Demo</span></p>
+      <Button asChild className="mt-3 h-12 w-full rounded-sm font-bold shadow-none"><Link to="/$service" params={{ service: "account" }}>sholok · Account preview</Link></Button>
       <div className="mt-2.5 flex justify-center gap-4 text-xs text-muted-foreground">
         <Link to="/$service" params={{ service: "mail" }} className="hover:text-brand">Mail <span className="font-bold text-alert">3</span></Link>
         <Link to="/$service" params={{ service: "pay" }} className="hover:text-brand">Pay</Link>
@@ -123,7 +122,7 @@ export function TrendingSearches() {
       <ol className="grid grid-cols-2 gap-x-4 px-3.5 py-2">
         {TRENDS.map((t, i) => (
           <li key={t} className="flex min-w-0 items-center gap-2 py-1 text-[13px]">
-            <span className={`w-4 shrink-0 font-bold ${i < 3 ? "text-alert" : "text-brand"}`}>{i + 1}</span>
+            <span className={`w-4 shrink-0 font-bold ${"text-brand"}`}>{i + 1}</span>
             <Link to="/search" search={{ q: t }} className="truncate hover:text-brand">{t}</Link>
           </li>
         ))}
