@@ -30,7 +30,7 @@ export function NewsModule({ limit = 7 }: { limit?: number }) {
   const [lead, ...rest] = NEWS.slice(0, limit);
   return (
     <Module title="News" to="news">
-      <div className="grid gap-0 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-0 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
         <article className="flex gap-3 border-b border-border p-3.5 md:border-b-0 md:border-r">
           <Thumb size="h-20 w-28" />
           <div className="min-w-0">
@@ -69,7 +69,7 @@ export function TopicsModule() {
 export function BlogModule() {
   return (
     <Module title="Blog" to="blog">
-      <ul className="grid divide-y divide-border sm:grid-cols-2 sm:divide-y-0">
+      <ul className="grid grid-cols-[minmax(0,1fr)] divide-y divide-border sm:grid-cols-2 sm:divide-y-0">
         {BLOG.map((b, i) => (
           <li key={b.id} className={`flex gap-3 p-3.5 ${i > 1 ? "sm:border-t" : ""} ${i % 2 === 0 ? "sm:border-r" : ""} border-border`}>
             <Thumb />
