@@ -11,3 +11,6 @@
 
 - Services live only in src/lib/services.ts (one registry; routes are `/$service`, active nav derives from the URL) — avoids duplicated service lists.
 - Demo content lives in src/lib/demo-data.ts and is labeled "Demo" in the UI — the app is frontend-only with no backend or external APIs.
+
+- Homepage and service pages share the portal-grid utility; primary service shortcuts derive from the registry and additional services remain in All Services — keeps layout and navigation consistent.
+- Generated demo contact-sheet media is registered with demo data and cropped through reusable media utilities — keeps fabricated content and its assets centralized.

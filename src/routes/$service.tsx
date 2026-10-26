@@ -48,11 +48,12 @@ const BODY: Record<string, () => ReactNode> = {
 
 function ServicePage() {
   const { service } = Route.useParams();
-  const s = getService(service)!;
+  const s = getService(service);
+  if (!s) return null;
   const Icon = s.icon;
   const Body = BODY[s.slug];
   return (
-    <div className="grid grid-cols-[minmax(0,1fr)] gap-4 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:gap-5">
+    <div className="portal-grid">
       <div className="flex min-w-0 flex-col gap-3">
         <div className="module flex items-center gap-3 p-4">
           <Icon className="h-6 w-6 text-brand" aria-hidden />

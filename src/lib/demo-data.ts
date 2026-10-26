@@ -1,3 +1,8 @@
+import editorialSheet from "@/assets/editorial-sheet.jpg";
+import productsSheet from "@/assets/products-sheet.jpg";
+
+export const DEMO_MEDIA = { editorial: editorialSheet, products: productsSheet };
+
 // All content here is fabricated demo data. It is not live news, prices, weather or markets.
 export const NEWS = [
   { id: "n1", title: "Dhaka metro adds late-night service on weekends", source: "Sholok Demo Desk", topic: "City" },

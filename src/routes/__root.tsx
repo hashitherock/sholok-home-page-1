@@ -135,7 +135,7 @@ function PortalShell() {
     <div className="flex min-h-screen flex-col">
       <Header query={q} />
       <ServiceNav />
-      <main className="portal-container flex-1 py-4">
+      <main className="portal-container flex-1 pb-6 pt-1">
         <Outlet />
       </main>
       <footer className="border-t border-border bg-card py-4 text-center text-xs text-muted-foreground">
