@@ -22,7 +22,7 @@ export function Module({ title, to, children }: { title: string; to?: string; ch
 }
 
 const Thumb = ({ size = "h-16 w-24", index = 0, product = false, alt = "Demo editorial photograph" }: { size?: string; index?: number; product?: boolean; alt?: string }) => (
-  <div className={`${size} media-tile crop-${index} shrink-0 rounded-sm`}>
+  <div className={`${size} media-tile ${["crop-0", "crop-1", "crop-2", "crop-3"][index] ?? "crop-0"} shrink-0 rounded-sm`}>
     <img src={product ? DEMO_MEDIA.products : DEMO_MEDIA.editorial} alt={alt} loading="lazy" width={1024} height={1024} />
   </div>
 );
@@ -73,7 +73,7 @@ export function BlogModule() {
       <ul className="grid grid-cols-[minmax(0,1fr)] divide-y divide-border sm:grid-cols-2 sm:divide-y-0">
         {BLOG.map((b, i) => (
           <li key={b.id} className={`flex gap-3 p-3.5 ${i > 1 ? "sm:border-t" : ""} ${i % 2 === 0 ? "sm:border-r" : ""} border-border`}>
-            <Thumb index={[1, 2, 1, 3][i]} alt={`Generated demo photograph for ${b.title}`} />
+            <Thumb index={[1, 2, 1, 3][i] ?? 0} alt={`Generated demo photograph for ${b.title}`} />
             <div className="min-w-0">
               <h3 className="line-clamp-2 font-medium"><Link to="/search" search={{ q: b.title }} className="hover:text-brand">{b.title}</Link></h3>
               <p className="line-clamp-2 text-xs text-muted-foreground">{b.excerpt}</p>

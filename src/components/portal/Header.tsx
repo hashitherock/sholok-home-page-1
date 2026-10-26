@@ -46,7 +46,7 @@ export function Header({ query }: { query?: string }) {
         <Link to="/" className="font-display text-3xl font-bold text-brand sm:text-4xl">
           sholok<span className="text-brand">.</span>
         </Link>
-        <div className="flex w-full max-w-[650px]"><SearchForm key={query} initial={query} /></div>
+        <div className="flex w-full max-w-[650px]"><SearchForm key={query} initial={query ?? ""} /></div>
       </div>
     </header>
   );
