@@ -3,6 +3,7 @@ import { LayoutGrid, X } from "lucide-react";
 import { useMemo, useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { SERVICES, CATEGORIES, STATUS_LABEL, activeServiceSlug, type ServiceCategory, type ServiceStatus } from "@/lib/services";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 export function StatusBadge({ status }: { status: ServiceStatus }) {
@@ -20,10 +21,10 @@ export function ServiceNav() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const active = activeServiceSlug(pathname);
   return (
-    <nav aria-label="Sholok services" className="border-b border-border bg-card">
-      <div className="portal-container flex items-stretch">
-        <ul className="no-scrollbar flex min-w-0 flex-1 overflow-x-auto">
-          {SERVICES.map((s) => {
+    <nav aria-label="Sholok services" className="bg-card">
+      <div className="portal-container flex items-start justify-center pb-5 pt-1">
+        <ul className="no-scrollbar flex min-w-0 max-w-[820px] overflow-x-auto">
+          {SERVICES.slice(0, 10).map((s) => {
             const on = s.slug === active;
             const Icon = s.icon;
             return (
@@ -33,11 +34,11 @@ export function ServiceNav() {
                   params={{ service: s.slug }}
                   aria-current={on ? "page" : undefined}
                   className={cn(
-                    "flex h-11 items-center gap-1.5 border-b-2 px-2.5 text-[13px] whitespace-nowrap",
+                    "flex h-[76px] w-[76px] flex-col items-center justify-center gap-1.5 border-b-2 text-xs whitespace-nowrap",
                     on ? "border-brand font-bold text-brand" : "border-transparent text-foreground hover:text-brand",
                   )}
                 >
-                  <Icon className="h-4 w-4" aria-hidden />
+                  <span className="flex h-10 w-10 items-center justify-center rounded border border-border bg-card text-brand"><Icon className="h-6 w-6" aria-hidden /></span>
                   {s.name}
                 </Link>
               </li>
@@ -60,16 +61,15 @@ function AllServices() {
 
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
-      <Dialog.Trigger className="flex h-11 shrink-0 items-center gap-1.5 border-l border-border pl-3 text-[13px] font-medium hover:text-brand">
-        <LayoutGrid className="h-4 w-4" aria-hidden /> <span className="hidden sm:inline">All Services</span>
-        <span className="sr-only sm:hidden">All Services</span>
-      </Dialog.Trigger>
+      <Dialog.Trigger asChild><Button variant="ghost" className="h-[76px] w-[76px] shrink-0 flex-col gap-1.5 rounded-none px-0 text-xs font-normal hover:text-brand">
+        <span className="flex h-10 w-10 items-center justify-center rounded border border-border [&_svg]:size-5"><LayoutGrid aria-hidden /></span><span>All Services</span>
+      </Button></Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 z-40 bg-foreground/30" />
         <Dialog.Content className="fixed inset-x-0 top-0 z-50 mx-auto flex max-h-[100dvh] w-full max-w-3xl flex-col border border-border bg-card sm:top-16 sm:max-h-[80vh] sm:rounded">
           <div className="flex items-center justify-between border-b border-border px-4 py-3">
             <Dialog.Title className="text-base font-bold">All Services</Dialog.Title>
-            <Dialog.Close aria-label="Close" className="p-1 hover:text-brand"><X className="h-5 w-5" /></Dialog.Close>
+            <Dialog.Close asChild><Button variant="ghost" size="icon" aria-label="Close"><X /></Button></Dialog.Close>
           </div>
           <Dialog.Description className="sr-only">Browse and filter Sholok services</Dialog.Description>
           <div className="space-y-2 border-b border-border px-4 py-3">
@@ -78,10 +78,10 @@ function AllServices() {
               className="h-9 w-full border border-border px-3 outline-none focus:border-brand" />
             <div className="flex flex-wrap gap-1.5" role="group" aria-label="Category">
               {(["All", ...CATEGORIES] as const).map((c) => (
-                <button key={c} type="button" onClick={() => setCat(c)} aria-pressed={cat === c}
-                  className={cn("rounded-sm border px-2 py-0.5 text-xs", cat === c ? "border-brand bg-brand text-primary-foreground" : "border-border hover:border-brand")}>
+                <Button variant="ghost" key={c} type="button" onClick={() => setCat(c)} aria-pressed={cat === c}
+                  className={cn("h-7 rounded-sm border px-2 py-0.5 text-xs", cat === c ? "border-brand bg-brand text-primary-foreground" : "border-border hover:border-brand")}>
                   {c}
-                </button>
+                </Button>
               ))}
             </div>
           </div>

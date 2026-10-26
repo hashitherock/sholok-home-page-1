@@ -70,10 +70,10 @@
 
 :root {
   --radius: 0.25rem;
-  --sholok-purple: oklch(0.38 0.2 305);
+  --sholok-purple: oklch(0.3741 0.2041 303.64);
   --sholok-purple-hover: oklch(0.33 0.18 305);
   --sholok-purple-soft: oklch(0.96 0.02 310);
-  --sholok-red: oklch(0.54 0.21 29);
+  --sholok-red: oklch(0.55 0.218 28.2);
   --sholok-red-soft: oklch(0.97 0.015 25);
   --background: oklch(0.97 0.002 286);
   --foreground: oklch(0.24 0 0);
@@ -150,7 +150,7 @@
   }
 
   body {
-    background-color: var(--color-background);
+    background-color: var(--color-card);
     color: var(--color-foreground);
   }
 }
@@ -165,10 +165,10 @@
 
 @utility portal-container {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1280px;
   margin-inline: auto;
   padding-inline: 12px;
-  @media (min-width: 640px) { padding-inline: 20px; }
+  @media (min-width: 640px) { padding-inline: 16px; }
 }
 
 @utility module {
@@ -183,7 +183,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  padding: 10px 14px;
+  padding: 14px 16px;
   border-bottom: 1px solid var(--color-border);
   font-size: 14px;
   font-weight: 700;
@@ -203,3 +203,18 @@
   scrollbar-width: none;
   &::-webkit-scrollbar { display: none; }
 }
+
+@utility portal-grid {
+ display: grid;
+ grid-template-columns: minmax(0, 1fr);
+ gap: 16px;
+ @media (min-width: 1000px) { grid-template-columns: minmax(0, 2fr) minmax(300px, 1fr); gap: 24px; }
+}
+@utility media-tile {
+ position: relative; overflow: hidden; background: var(--color-muted);
+ & img { position: absolute; max-width: none; width: 200%; height: 200%; object-fit: cover; }
+}
+@utility crop-0 { & img { left: 0; top: 0; } }
+@utility crop-1 { & img { left: -100%; top: 0; } }
+@utility crop-2 { & img { left: 0; top: -100%; } }
+@utility crop-3 { & img { left: -100%; top: -100%; } }

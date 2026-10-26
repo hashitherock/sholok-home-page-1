@@ -20,14 +20,14 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
-    <div className="grid grid-cols-[minmax(0,1fr)] gap-4 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:gap-5">
-      <div className="flex min-w-0 flex-col gap-3">
+    <div className="portal-grid">
+      <div className="flex min-w-0 flex-col gap-4">
         <NewsModule />
-        <TopicsModule />
-        <BlogModule />
         <ShoppingModule />
+        <BlogModule />
+        <TopicsModule />
       </div>
-      <aside className="flex min-w-0 flex-col gap-3" aria-label="Sidebar">
+      <aside className="flex min-w-0 flex-col gap-4" aria-label="Sidebar">
         <AccountModule />
         <TrendingSearches />
         <WeatherModule />
