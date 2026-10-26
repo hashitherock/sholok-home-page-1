@@ -1,24 +1,39 @@
 import { createFileRoute } from "@tanstack/react-router";
+import {
+  NewsModule, TopicsModule, BlogModule, ShoppingModule,
+  AccountModule, TrendingSearches, WeatherModule, FinanceModule, QuickLinks,
+} from "@/components/portal/Modules";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "Sholok — Search, news and services in one portal" },
+      { name: "description", content: "Search Sholok and jump to news, blogs, shopping, weather and more from one compact homepage." },
+      { property: "og:title", content: "Sholok — Search portal" },
+      { property: "og:description", content: "Search, services and information in one compact portal." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div className="grid grid-cols-[minmax(0,1fr)] gap-4 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:gap-5">
+      <div className="flex min-w-0 flex-col gap-3">
+        <NewsModule />
+        <TopicsModule />
+        <BlogModule />
+        <ShoppingModule />
+      </div>
+      <aside className="flex min-w-0 flex-col gap-3" aria-label="Sidebar">
+        <AccountModule />
+        <TrendingSearches />
+        <WeatherModule />
+        <FinanceModule />
+        <QuickLinks />
+      </aside>
     </div>
   );
 }

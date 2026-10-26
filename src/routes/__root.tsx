@@ -12,6 +12,9 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { Header } from "../components/portal/Header";
+import { ServiceNav } from "../components/portal/ServiceNav";
+import { useRouterState } from "@tanstack/react-router";
 
 function NotFoundComponent() {
   return (
@@ -78,14 +81,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Sholok — Search portal" },
+      { name: "description", content: "Sholok: search, services and information in one compact portal." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {
@@ -93,6 +92,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: appCss,
       },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@500;700&family=Noto+Sans:wght@400;500;700&display=swap" },
     ],
   }),
   shellComponent: RootShell,
@@ -121,7 +122,25 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <PortalShell />
     </QueryClientProvider>
+  );
+}
+
+function PortalShell() {
+  const q = useRouterState({
+    select: (s) => (s.location.pathname === "/search" ? String((s.location.search as { q?: string }).q ?? "") : ""),
+  });
+  return (
+    <div className="flex min-h-screen flex-col">
+      <Header query={q} />
+      <ServiceNav />
+      <main className="portal-container flex-1 py-4">
+        <Outlet />
+      </main>
+      <footer className="border-t border-border bg-card py-4 text-center text-xs text-muted-foreground">
+        Sholok · All news, prices, weather and market figures shown are demo data.
+      </footer>
+    </div>
   );
 }

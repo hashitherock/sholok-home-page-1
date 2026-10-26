@@ -8,3 +8,6 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Services live only in src/lib/services.ts (one registry; routes are `/$service`, active nav derives from the URL) — avoids duplicated service lists.
+- Demo content lives in src/lib/demo-data.ts and is labeled "Demo" in the UI — the app is frontend-only with no backend or external APIs.
