@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { getService } from "@/lib/services";
 import { StatusBadge } from "@/components/portal/ServiceNav";
@@ -26,7 +27,7 @@ export const Route = createFileRoute("/$service")({
   component: ServicePage,
 });
 
-const BODY: Record<string, () => React.ReactNode> = {
+const BODY: Record<string, () => ReactNode> = {
   news: () => <NewsModule />,
   blog: () => <BlogModule />,
   shopping: () => <ShoppingModule />,
